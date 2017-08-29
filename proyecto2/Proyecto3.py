@@ -33,7 +33,7 @@ def parse(filename):
     return new_x, y
 
 def normalizacionDeCaracteristicas(X):
-    m = len(X)
+    m = len(X[0])
     sum_0 = 0
     sum_1 = 1
     for i in range(m):
@@ -43,10 +43,13 @@ def normalizacionDeCaracteristicas(X):
     media_1 = sum_1/m
     normalized_0 = []
     normalized_1 = []
+    print "media", media_0
 
     for i in range(m):
         normalized_0.append((X[0][i] - media_0)/ (np.amax(X[0]) - np.amin(X[0])))
         normalized_1.append((X[1][i] - media_1)/ (np.amax(X[1]) - np.amin(X[1])))
+        print "rango", (np.amax(X[1]) - np.amin(X[1]))
+        print "normalizado", normalized_0[i]
 
     print normalized_0, normalized_1
     return normalized_0, normalized_1
