@@ -30,7 +30,7 @@ def parse(filename):
         y.append(float(x_vars[-1]))
     text_file.close()
     new_x = [[X[j][i] for j in range(len(X))] for i in range(len(X[0]))]
-    return new_x, y
+    return np.array(new_x), np.array(y)
 
 def normalizacionDeCaracteristicas(X):
     m = len(X[0])
