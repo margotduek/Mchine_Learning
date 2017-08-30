@@ -14,7 +14,8 @@
 ## Regreción logística
 Solamente hay si y no, falso y verdadero.
 
-
+## Regularización
+  Esta es la solución del overfit, para reducir el error. Para esto tenemos que tener un lambda
 
 
 

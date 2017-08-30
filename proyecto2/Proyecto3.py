@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+
 # def main():
 #     x, y = parse("ex1data1.txt")
 #     theta = gadienteDescendente(x, y, 0)
@@ -32,31 +33,60 @@ def parse(filename):
     new_x = [[X[j][i] for j in range(len(X))] for i in range(len(X[0]))]
     return np.array(new_x), np.array(y)
 
+
 def normalizacionDeCaracteristicas(X):
+    m = len(X)
+    mu = []
+    sigma = []
+    for i in range(m):
+        mu.append(np.mean(X[i]))
+
+    for i in range(m):
+        sigma.append(X[i].std())
+
+    normalized = []
+    temp = 0
+    for i in range(m):
+        normalized_temp = []
+        for j in range(len(X[i])):
+            temp = ((X[i][j] - mu[i]))/sigma[i]
+            normalized_temp.append(temp)
+        normalized.append(normalized_temp)
+
+    return normalized, mu, sigma
+
+
+def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100):
+    X = []
+    x = []
+    for i in range(len(X_old[0])):
+        x.append(1)
+    X.append(x)
+
+    for i in range(len(X_old)):
+        x = []
+        for j in range(len(X_old[i])):
+            x.append(X_old[i][j])
+        X.append(x)
+
+    vectors = len(X)
+    thetas = []
     m = len(X[0])
-    sum_0 = 0
-    sum_1 = 1
-    for i in range(m):
-        sum_0 += X[0][i]
-        sum_1 += X[1][i]
-    media_0 = sum_0/m
-    media_1 = sum_1/m
-    normalized_0 = []
-    normalized_1 = []
-    print "media", media_0
 
-    for i in range(m):
-        normalized_0.append((X[0][i] - media_0)/ (np.amax(X[0]) - np.amin(X[0])))
-        normalized_1.append((X[1][i] - media_1)/ (np.amax(X[1]) - np.amin(X[1])))
-        print "rango", (np.amax(X[1]) - np.amin(X[1]))
-        print "normalizado", normalized_0[i]
+    for i in range(iteraciones):
+        for j in range(vectors):
+            temp_theta = 0
+            for k in range(m):
+                temp_theta += ( ( (theta[j] * X[j][k]) + (theta[j+1] * X[j][k]) ) - y[k] ) * X[j][k]
 
-    print normalized_0, normalized_1
-    return normalized_0, normalized_1
+            theta[j] = (temp_theta - (alfa* temp_theta)/m)
 
+    return (theta_0, theta_1)
 
+    
 x, y = parse("data.txt")
 normalizacionDeCaracteristicas(x)
+gadienteDescendenteMultivariable(x, y, 0)
 
 
 
@@ -74,23 +104,7 @@ normalizacionDeCaracteristicas(x)
 #     plt.plot(X,new_y)
 #     plt.show()
 #
-# def gadienteDescendenteMultivariable(X, y, theta, alfa=0.1, iteraciones=100):
-#     m = len(X)
-#     theta_0 = 0
-#     theta_1 = 0
-#
-#     for i in range(iteraciones):
-#         temp_theta_0 = 0
-#         temp_theta_1 = 0
-#         for j in range(m):
-#             temp_theta_0 += (theta_0 + theta_1 * X[j] ) - y[j]
-#             temp_theta_1 += ((theta_0 + theta_1 * X[j] ) - y[j])* X[j]
-#
-#         theta_0 = (theta_0 - (alfa* temp_theta_0)/m)
-#         theta_1 = (theta_1 - (alfa* temp_theta_1)/m)
-#
-#
-#     return (theta_0, theta_1)
+
 #
 # def calculaCosto(X,y,theta):
 #     theta_0, theta_1 = theta
