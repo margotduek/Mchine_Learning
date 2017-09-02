@@ -111,42 +111,39 @@ def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100)
             temp_theta[j] = theta[j] - (alfa/m) * sum( ( h(xi, theta ) - yi) * xi[j] for (xi,yi) in zip(Xtrans,y) )
 
         theta = temp_theta
+        J_Historial[i] = calculaCosto(X,y,theta)
 
-    print theta
-    return theta
+    return J_Historial, theta
+
+
+def calculaCosto(X,y,theta):
+    err = 0.0
+    m = len(X)
+    for (xi,yi) in zip(X,y):
+        err += np.sqrt(h(xi, theta))**2)
+    return (err/2*len(X))
+
+def graficaError(J_Historial):
+    plt.plot(J_Historial, 'ro')
+    plt.show()
 
 
 x, y_old = parse("data.txt")
 normalized_X, mu, sigma = normalizacionDeCaracteristicas(x)
 y = normalizacionDeCaracteristicasy(y_old)
 theta = initializeTheta(x)
-gadienteDescendenteMultivariable(normalized_X, y, theta)
-
-
+historial, theta = gadienteDescendenteMultivariable(normalized_X, y, theta)
+graficaError(historial)
 
 # def ecuacionNormal(X,y):
 #
 # def predicePrecio(X,theta):
 #
-# def graficaError(J_Historial):
-#     m = len(X)
-#     new_y = []
-#     theta_0, theta_1 = theta
-#     plt.plot(X, y, 'ro')
-#     for i in range(m):
-#         new_y.append((theta_1 * X[i]) + theta_0)
-#     plt.plot(X,new_y)
-#     plt.show()
+#
 #
 
 #
-# def calculaCosto(X,y,theta):
-#     theta_0, theta_1 = theta
-#     err = 0.0
-#     m = len(X)
-#     for i in range(m):
-#         err += np.sqrt((y[i] - (theta_0 * X[i] + theta_1))**2)
-#     return (err/2*len(X))
+
 #
 #
 # if __name__ == '__main__':
