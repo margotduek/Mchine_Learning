@@ -2,17 +2,6 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-
-# def main():
-#     x, y = parse("ex1data1.txt")
-#     theta = gadienteDescendente(x, y, 0)
-#     print "theta is ", theta
-#     print "The cost is ", calculaCosto(x, y, theta)
-#     graficaDatos(x, y, theta)
-#     theta_0, theta_1 = theta
-#     print ((theta_1 * 3.5) + theta_0)
-
 def parse(filename):
     text_file = open(filename, "r")
 
@@ -76,17 +65,9 @@ def initializeTheta(X):
         theta.append(0.0)
     return np.array(theta)
 
-
-def h(X,theta):
-    # print X
-    # print theta
-
-    #print theta.transpose().dot(X)
-    return theta.transpose().dot(X)
-
-def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100):
-    X = []
+def put_ones(X_old):
     x = []
+    X = []
     for i in range(len(X_old[0])):
         x.append(1)
     X.append(x)
@@ -97,10 +78,16 @@ def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100)
             x.append(X_old[i][j])
         X.append(x)
     X = np.array(X)
+    return X
 
+def h(X,theta):
+    return theta.transpose().dot(X)
+
+def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100):
+    J_Historial = []
+    X = put_ones(X_old)
 
     Xtrans = X.transpose()
-
 
     vectors = len(X)
     m = len(X[0])
@@ -111,7 +98,7 @@ def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100)
             temp_theta[j] = theta[j] - (alfa/m) * sum( ( h(xi, theta ) - yi) * xi[j] for (xi,yi) in zip(Xtrans,y) )
 
         theta = temp_theta
-        J_Historial[i] = calculaCosto(X,y,theta)
+        J_Historial.append(calculaCosto(Xtrans,y,theta))
 
     return J_Historial, theta
 
@@ -120,7 +107,7 @@ def calculaCosto(X,y,theta):
     err = 0.0
     m = len(X)
     for (xi,yi) in zip(X,y):
-        err += np.sqrt(h(xi, theta))**2)
+        err += (h(xi, theta) - yi)**2
     return (err/2*len(X))
 
 def graficaError(J_Historial):
@@ -135,16 +122,10 @@ theta = initializeTheta(x)
 historial, theta = gadienteDescendenteMultivariable(normalized_X, y, theta)
 graficaError(historial)
 
-# def ecuacionNormal(X,y):
-#
-# def predicePrecio(X,theta):
-#
-#
-#
+def ecuacionNormal(X_old,y):
+    X = put_ones(X_old)
+    return  (inv(X.transpose().dot(X))).dot(X.transpose().dot(Y))
 
-#
 
-#
-#
-# if __name__ == '__main__':
-#     main()
+def predicePrecio(X,theta):
+    return h( np.append([1],X) ,theta)
