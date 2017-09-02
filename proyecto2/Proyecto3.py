@@ -53,8 +53,36 @@ def normalizacionDeCaracteristicas(X):
             normalized_temp.append(temp)
         normalized.append(normalized_temp)
 
-    return normalized, mu, sigma
+    return np.array(normalized), mu, sigma
 
+def normalizacionDeCaracteristicasy(y):
+    m = len(y)
+    mu = np.mean(y)
+    sigma = y.std()
+
+    normalized = []
+    temp = 0
+    normalized_temp = []
+    for j in range(len(y)):
+        temp = ((y[j] - mu))/sigma
+        normalized.append(temp)
+
+    return np.array(normalized)
+
+
+def initializeTheta(X):
+    theta = []
+    for i in range(len(x) + 1):
+        theta.append(0.0)
+    return np.array(theta)
+
+
+def h(X,theta):
+    # print X
+    # print theta
+
+    #print theta.transpose().dot(X)
+    return theta.transpose().dot(X)
 
 def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100):
     X = []
@@ -68,25 +96,31 @@ def gadienteDescendenteMultivariable(X_old, y, theta, alfa=0.1, iteraciones=100)
         for j in range(len(X_old[i])):
             x.append(X_old[i][j])
         X.append(x)
+    X = np.array(X)
+
+
+    Xtrans = X.transpose()
+
 
     vectors = len(X)
-    thetas = []
     m = len(X[0])
 
     for i in range(iteraciones):
+        temp_theta = theta.copy() #Thetas temporales
         for j in range(vectors):
-            temp_theta = 0
-            for k in range(m):
-                temp_theta += ( ( (theta[j] * X[j][k]) + (theta[j+1] * X[j][k]) ) - y[k] ) * X[j][k]
+            temp_theta[j] = theta[j] - (alfa/m) * sum( ( h(xi, theta ) - yi) * xi[j] for (xi,yi) in zip(Xtrans,y) )
 
-            theta[j] = (temp_theta - (alfa* temp_theta)/m)
+        theta = temp_theta
 
-    return (theta_0, theta_1)
+    print theta
+    return theta
 
-    
-x, y = parse("data.txt")
-normalizacionDeCaracteristicas(x)
-gadienteDescendenteMultivariable(x, y, 0)
+
+x, y_old = parse("data.txt")
+normalized_X, mu, sigma = normalizacionDeCaracteristicas(x)
+y = normalizacionDeCaracteristicasy(y_old)
+theta = initializeTheta(x)
+gadienteDescendenteMultivariable(normalized_X, y, theta)
 
 
 
