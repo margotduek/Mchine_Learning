@@ -75,7 +75,7 @@ def normalizacionDeCaracteristicasy(y):
 # Function to initialize the theta matrix in 0.0 so it can be float
 def initializeTheta(X):
     theta = []
-    for i in range(len(x) + 1):
+    for i in range(len(X) + 1):
         theta.append(0.0)
     return np.array(theta)
 
@@ -151,12 +151,3 @@ def predicePrecio(X,theta):
     X = np.array(X)
     X = X.transpose()
     return h( np.append([1], X) ,theta)
-
-x, y_old = parse("data.txt")
-normalized_X, mu, sigma = normalizacionDeCaracteristicas(x)
-y = normalizacionDeCaracteristicasy(y_old)
-theta = initializeTheta(x)
-historial, theta = gadienteDescendenteMultivariable(normalized_X, y, theta)
-#graficaError(historial)
-thetas = ecuacionNormal(x, y_old)
-print 'precio ',  predicePrecio([1416,2], thetas)
