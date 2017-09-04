@@ -27,8 +27,7 @@ def parse(filename):
     # We return X an y as a numpy array
     return np.array(new_x), np.array(y)
 
-# def graficaDatos(X,y,theta):
-
+# Function to calculate Sigmoidal function
 def sigmoidal(z):
     return 1.0/(1.0 + np.e**( -z ) )
 
@@ -66,19 +65,24 @@ def initializeTheta(X):
 
 def funcionCosto(theta,X_old,y):
     X_old = put_ones(X_old)
+    # Transpose the function for easier operations
     X = X_old.transpose()
     J = 0
     grad = []
     m = len(y)
     for i in range(m):
+        # Calculate sigmoidal with the sigmoidal() function
         sigmoidal_var = sigmoidal(h(X[i], theta))
+        # Calculate J
         J = ((-1 * y[i] * np.log(sigmoidal_var)) - (1 - y[i] * np.log(1 - sigmoidal_var)))/m
 
+    # Calculate grad
     for i in range(len(X_old) ):
         grad.append(sum(( sigmoidal(h(xi, theta) ) - yi) * xi[i] for xi, yi in zip(X, y) )/m)
 
     return(J, grad)
 
+# This function makes the theta vector so we can make predictions
 def aprende(theta,X_old,y,iteraciones = 1500):
     X = put_ones(X_old)
     Xtrans = X.transpose()
@@ -97,14 +101,18 @@ def aprende(theta,X_old,y,iteraciones = 1500):
 
     return theta
 
+# Prefict function
 def predice(theta,X):
     predictions = []
     X = put_ones(X)
     X = X.transpose()
+    # We check in all the values of X
     for i in range(0,len(X)):
+        # If the result is higher than 0.5 then is one == approved
         if(sigmoidal( h(X[i], theta)) >= 0.5):
             predictions.append(1)
         else:
+            # Else is 0 == failed
             predictions.append(0)
     return predictions
 
@@ -137,15 +145,30 @@ def normalizacionDeCaracteristicas(X):
 
     return np.array(normalized), mu, sigma
 
+# Function to graph
+def graficaDaton(Z, y, theta):
+    plt.plot(J_Historial, 'ro')
+    plt.show()
 
-x, y = parse('ex2data1.txt')
-theta = initializeTheta(x)
-x, mu, sigma = normalizacionDeCaracteristicas(x)
-funcionCosto(theta, x, y)
-theta = aprende(theta,x,y)
-costo, gradientesThetas = funcionCosto(theta,x,y)
-p = predice(theta, x)
 
-print p
-print y
-print theta
+
+
+
+
+
+
+#Nos deberian dar una theta normalizada y una X normalizada, Y debe ser 1 o 0
+def graficaDatos(X,Y,theta):
+    for _x,_y in zip(X,Y): plt.scatter( _x[0],_x[1], marker="x" if _y else 'o' ) #Puntos X/Y
+    #Nos dieron datos crudos pero nuestras thetas estan normalizadas
+    #nX = normalizacionDeCaracteristicas(X)[0]
+    x1_min = np.amin(X,axis=0)[0]
+    x1_max = np.amax(X,axis=0)[0]
+    #Dos valores es suficiente puesto que es un recta
+    xs = [x1_min, x1_max]
+    #0.5 es la brecha de cuando pasa o no pasa el examen
+    f = lambda x1,th : (0.5-th[0]-th[1]*x1)/th[2]
+    #Evaluar x2 por cada x1
+    plt.plot( xs  , [f(xi,theta) for xi in xs] )
+    #plt.legend() # Add a legend
+    plt.show()   # Show the plot
