@@ -145,30 +145,32 @@ def normalizacionDeCaracteristicas(X):
 
     return np.array(normalized), mu, sigma
 
-# Function to graph
-def graficaDaton(Z, y, theta):
-    plt.plot(J_Historial, 'ro')
-    plt.show()
 
+def graficaDatos(X,y,theta):
+    X = X.transpose()
+    xs = []
+    os = []
+    minimum = int(min(X[:, 0]))
+    maximum = int(max(X[:, 1]))
+    line_x = []
+    line_y = []
 
+    # If y is one we print x else we print and x
 
+    for i,y in enumerate(y):
+        if y == 1:
+            xs.append([X[i][0],X[i][1]])
+        else:
+            os.append([X[i][0],X[i][1]])
 
-
-
-
-
-#Nos deberian dar una theta normalizada y una X normalizada, Y debe ser 1 o 0
-def graficaDatos(X,Y,theta):
-    for _x,_y in zip(X,Y): plt.scatter( _x[0],_x[1], marker="x" if _y else 'o' ) #Puntos X/Y
-    #Nos dieron datos crudos pero nuestras thetas estan normalizadas
-    #nX = normalizacionDeCaracteristicas(X)[0]
+    # Calculate the points of the line
     x1_min = np.amin(X,axis=0)[0]
     x1_max = np.amax(X,axis=0)[0]
-    #Dos valores es suficiente puesto que es un recta
-    xs = [x1_min, x1_max]
-    #0.5 es la brecha de cuando pasa o no pasa el examen
+    #Take both points and make a line to join them
+    _xs = [x1_min, x1_max]
     f = lambda x1,th : (0.5-th[0]-th[1]*x1)/th[2]
-    #Evaluar x2 por cada x1
-    plt.plot( xs  , [f(xi,theta) for xi in xs] )
-    #plt.legend() # Add a legend
-    plt.show()   # Show the plot
+    plt.plot( _xs  , [f(xi,theta) for xi in _xs] )
+
+    plt.plot(np.array(xs)[:,0],np.array(xs)[:,1],"x", c="purple")
+    plt.plot(np.array(os)[:,0],np.array(os)[:,1],"o", c="green")
+    plt.show()

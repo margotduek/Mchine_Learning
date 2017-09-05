@@ -18,6 +18,13 @@ Solamente hay si y no, falso y verdadero.
   Esta es la solución del overfit, para reducir el error. Para esto tenemos que tener un lambda
 
 
+## Redes Neuronales
+Las redes neuronales siguen siendo parte del aprendizaje supervizado
+- Las redes neuronales son uno de los principales algoritmos bioinspirados y lo que buscaban era imitar el cerebro
+- número de neuronas intermedias en la entrada son las features
+- número de neuronas a la salida son salidas
+- capas intermedias no se sabe 
+
 
 ## Investigar
 - aprendizaje supervizado y por refuerzo

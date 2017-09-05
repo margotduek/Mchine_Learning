@@ -8,3 +8,4 @@ if __name__ == "__main__":
     theta = aprende(theta,x,y)
     costo, gradientesThetas = funcionCosto(theta,x,y)
     p = predice(theta, x)
+    graficaDatos(x,y,theta)
