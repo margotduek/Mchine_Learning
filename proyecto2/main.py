@@ -6,6 +6,6 @@ if __name__ == "__main__":
     y = normalizacionDeCaracteristicasy(y_old)
     theta = initializeTheta(x)
     historial, theta = gadienteDescendenteMultivariable(normalized_X, y, theta)
-    #graficaError(historial)
+    graficaError(historial)
     thetas = ecuacionNormal(x, y_old)
-    print 'precio ',  predicePrecio([1416,2], thetas)   
+    print 'precio ',  predicePrecio([1416,2], thetas)
