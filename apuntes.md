@@ -23,7 +23,9 @@ Las redes neuronales siguen siendo parte del aprendizaje supervizado
 - Las redes neuronales son uno de los principales algoritmos bioinspirados y lo que buscaban era imitar el cerebro
 - número de neuronas intermedias en la entrada son las features
 - número de neuronas a la salida son salidas
-- capas intermedias no se sabe 
+- capas intermedias no se sabe
+
+
 
 
 ## Investigar

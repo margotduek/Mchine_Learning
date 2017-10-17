@@ -1,11 +1,13 @@
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def grafica(e):
     plt.plot( e )
     plt.show()
 
+#funcion para agregarle la capa de unos a la matriz
 def agregaUnos(X):
     new__x = []
     for i in range(len(X)):
@@ -23,22 +25,27 @@ def entrenaPerceptron(oX, y, theta):
     X = agregaUnos(oX)
     keep_going = 0
     error_tot = []
+    # revisar que tengamos por lo menos un error para seguir revisando
     while keep_going < 4:
         keep_going = 0
         batch_error = 0
         for i in range(len(X)):
             error = 0
+            #predice y
             new_y = predice(theta, X[i])
+            # revisamos la y que tenemos menos la predecida para ver el error
             error += y[i] - new_y
+            #calculamos theta nuevo
             for j in range(len(theta)):
                 theta[j] += error * X[i][j]
             if( error == 0):
                 keep_going += 1
             batch_error += abs(error)
+        # agregamos el error total del batch
         error_tot.append(batch_error)
     return theta, error_tot
 
-
+# Predice la nueva y
 def predice(theta, X):
     for i in range(len(X)):
         net = sum(theta*x for theta,x in zip(theta,X))
@@ -65,17 +72,51 @@ def predicePerceptron(theta, oX):
     return new_theta
 
 
+# Predice la nueva y
+def predice_adaline(theta, X):
+    for i in range(len(X)):
+        net = sum(theta*x for theta,x in zip(theta,X))
+        if (net > .5):
+            return 1
+        return 0
 
 # def funcionCostoAdaline(theta,X,y):
-# def entrenaAdaline(X, y, theta):
-# def prediceAdaline(theta, X):
+def entrenaAdaline(oX, y, theta):
+    X = agregaUnos(oX)
+    total_error = 10
+    error_tot = []
+    # revisar que tengamos por lo menos un error para seguir revisando
+    while total_error > 0.01:
+        new__y = []
+        for i in range(len(X)):
+            error = 0
+            #predice y
+            new_y = predice_adaline(theta, X[i])
+            new__y.append(new_y)
+            # revisamos la y que tenemos menos la predecida para ver el error
+            error += y[i] - new_y
+            #calculamos theta nuevo
+            for j in range(len(theta)):
+                theta[j] += error * X[i][j]
 
+        total_error = rmse(np.array(new__y), np.array(y))
+        # agregamos el error total del batch
+        error_tot.append(total_error)
+    return theta, error_tot
 
-X = [[0,0], [0,1], [1,0], [1,1]]
-y = [0,1,1,1]
-theta = [1.5, 0.5, 1.5]
+# Calculamos el rmse
+def rmse(predictions, targets):
+    return np.sqrt(((predictions - targets) ** 2).mean())
 
-
-t, e_perceptron = entrenaPerceptron(X, y, theta)
-n_t = predicePerceptron(t, X)
-grafica(e_perceptron)
+def prediceAdaline(theta, oX):
+    X = agregaUnos(oX)
+    new_theta = []
+    for i in range(len(X)):
+        net = 0
+        for j in range(len(X[i])):
+            net = sum(theta*x for theta,x in zip(theta,X[i]))
+        if (net > .5):
+            new_theta.append(1)
+        else:
+            new_theta.append(0)
+    return new_theta
