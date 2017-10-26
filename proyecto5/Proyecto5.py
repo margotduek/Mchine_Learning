@@ -68,13 +68,10 @@ def prediceRNYaEntrenada(X, nn_params, b, activacion):
 def is_one(A):
     return np.where(A < 0.5, 0,  1)
 
-#funcion que recibe los errores y crea la grafica
 def graficar_error(errors):
-    #pasando la lista de errores a otra debido al formato en el que esta
     plot_errors = np.zeros(len(errors))
     for i in range(len(errors)):
         plot_errors[i] = errors[i]
-    #graficar error
     plt.plot(plot_errors)
     plt.ylabel('Error')
     plt.show()
@@ -82,19 +79,15 @@ def graficar_error(errors):
 
 
 
-# funcion principal
 def main():
-    # ejemplos de la tabla de verdad AND
-    Xand = np.array([[0,0], [0,1], [1,0], [1,1]]).transpose()
-    Yand = np.array([[0], [0], [0], [1]]).transpose()
+    X = np.array([[0,0], [0,1], [1,0], [1,1]]).transpose()
+    Y = np.array([[0], [0], [0], [1]]).transpose()
 
-    # inicializacion de los pesos aleatorios
-    weights_sig = randInicializaPesos(Xand.shape[0])
+    pesos = randInicializaPesos(X.shape[0])
 
-    b, nn_params_sig, err = bpnUnaNeurona(weights_sig, Xand.shape[0], Xand, Yand, .6, 'sigmoidal')
+    b, nn_params_sig, err = bpnUnaNeurona(pesos, X.shape[0], X, Y, .6, 'sigmoidal')
 
-    # impresion de resultados de la red neuronal para clasificacion de AND
-    print("y gorrito: ", prediceRNYaEntrenada(Xand, nn_params_sig, b, 'sigmoidal'))
+    print("y gorrito: ", prediceRNYaEntrenada(X, nn_params_sig, b, 'sigmoidal'))
 
     return
 
