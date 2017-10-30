@@ -1,3 +1,7 @@
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+from pylab import plot, ylim
 
 
 class Neuronal_Network(object):
@@ -10,6 +14,11 @@ class Neuronal_Network(object):
         # Weights
         self.W1 = np.random.randn(self.input_layer_size, self.hidden_layer_size)
         self.W2 = np.random.randn(self.hidden_layer_size, self.output_layer_size)
+
+        X = np.array([[3,5], [5,1], [10,2]]).transpose()
+        Y = np.array([[75], [83], [93]]).transpose()
+
+        print(forward(slef, X))
 
 
     def forward(self, X):
@@ -54,8 +63,8 @@ class Neuronal_Network(object):
         return params
 
     def computeGradients(self, X, y):
-        dJdW1, dJdW2 = self.cost_function_prime(X, y):
-            return np.concatenate((dJdW1.ravel(), dJdW2.ravel()))
+        dJdW1, dJdW2 = self.cost_function_prime(X, y)
+        return np.concatenate((dJdW1.ravel(), dJdW2.ravel()))
 
     def computeNumericalGradient(N, X, y):
         paramsInitial = N.getParams()
@@ -79,3 +88,20 @@ class Neuronal_Network(object):
 
         N.setParams(paramsInitial)
         return numgrad
+
+
+#
+# def main():
+#     X = np.array([[3,5], [5,1], [10,2]).transpose()
+#     Y = np.array([[75], [83], [93]).transpose()
+#
+#     pesos = randInicializaPesos(X.shape[0])
+#
+#     b, nn_params_sig, err = bpnUnaNeurona(pesos, X.shape[0], X, Y, .6, 'sigmoidal')
+#
+#     print("y gorrito: ", prediceRNYaEntrenada(X, nn_params_sig, b, 'sigmoidal'))
+#
+#     return
+#
+# if __name__ == "__main__":
+#     main()

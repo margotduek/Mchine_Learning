@@ -77,8 +77,6 @@ def graficar_error(errors):
     plt.show()
 
 
-
-
 def main():
     X = np.array([[0,0], [0,1], [1,0], [1,1]]).transpose()
     Y = np.array([[0], [0], [0], [1]]).transpose()
