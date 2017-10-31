@@ -5,22 +5,7 @@ import matplotlib.pyplot as plt
 from pylab import plot, ylim
 
 
-def readPoints(filename):
-  """ Returns two lists representing the x and y vectors read from
-  file with name filename delimited by commas.
-
-  Given the name of a file that contains rows of ordered x,y pairs
-  separated by a simple comma and without a header, return two lists
-  the first representing the x values and the second representing the
-  y values
-
-  Keyword arguments:
-  filename -- The name of the file with the values.
-
-  Returns:
-  X -- A numpy matrix of size (m, n) representing the x-values.
-  Y -- A numpy matrix of size (m, 1) representing the y-values.
-  """
+def lee_numeros(filename):
   x = []
   y = []
   with open(filename, 'r') as file:
@@ -32,41 +17,6 @@ def readPoints(filename):
         y.append(int(filtered[-1]))
 
   return (np.mat(x).T, np.mat(y))
-
-#
-#
-# def lee_numeros(archivo):
-#     X = np.zeros((400, 5000))
-#     y = np.zeros((1, 5000))
-#
-#     with open(archivo, 'r') as a:
-#         column = 0
-#         for line in a:
-#             cols = list(filter(lambda x: x != "", line.split(" ")))
-#             row = 0
-#             for i in range(len(cols) - 1):
-#                 if i != 0 :
-#                     X[row][column] = float(cols[i])
-#                 else:
-#                     y[0][column] = float(cols[i])
-#                     print(cols[i])
-#                 row += 1
-#             column += 1
-#
-#     #print(y)
-#
-#     temp = []
-#     temp = np.zeros((10, 5000))
-#     print(len(y))
-#     print("y0", len(y[0]))
-#     for i in range(len(y[0])):
-#         yi = int(y[0][i]) - 1
-#         temp[yi][i] = 1
-#         #print(y[0][i])
-#     print(temp.transpose())
-#
-#     return X, temp.transpose()
-
 
 
 def sigmoidal(x):
@@ -118,7 +68,6 @@ def randInicializacionPesos(L_in, L_out):
     return W
 
 def prediceRNYaEntrenada(X,W1,b1,W2,b2):
-    lasty = []
     # Z1 = W1X + B1
     Z1 = np.dot(W1, X) + b1
     A1 = sigmoidal(Z1)
@@ -126,20 +75,9 @@ def prediceRNYaEntrenada(X,W1,b1,W2,b2):
     Z2 = np.dot(W2, A1) + b2
     #ygorrito = A2 y gorrito es la salida final, como en este caso a2 es la final por eso es ygorrito
     ygorrito = sigmoidal(Z2)
-    for i in range(len(ygorrito)):
-        for j in range(len(ygorrito[i])):
-            maxi = max(ygorrito[i])
-            if(ygorrito[i][j] == maxi):
-                lasty.append(j)
-                
-    return lasty
 
-X, y = readPoints("digitos.txt")
+    return ygorrito
+
+X, y = lee_numeros("digitos.txt")
 W1, b1, W2, b2 = entrenaRN(400, 25, 10, X, y)
 ygorrito = prediceRNYaEntrenada(X,W1,b1,W2,b2)
-# np.set_printoptions(threshold=np.nan)
-
-print(y)
-print(ygorrito)
-print(y.shape)
-print(ygorrito.shape)
