@@ -5,52 +5,50 @@ import matplotlib.pyplot as plt
 from pylab import plot, ylim
 
 
-def lee_numeros(filename):
-  x = []
-  y = []
-  with open(filename, 'r') as file:
-    reader = csv.reader(file, delimiter=' ')
-    for row in reader:
-      filtered = list(filter(lambda x: x != "", row))
-      if filtered:
-        x.append(list((map(lambda x : float(x), filtered[:-1]))))
-        y.append(int(filtered[-1]))
+# def lee_numeros(filename):
+#   x = []
+#   y = []
+#   with open(filename, 'r') as file:
+#     reader = csv.reader(file, delimiter=' ')
+#     for row in reader:
+#       filtered = list(filter(lambda x: x != "", row))
+#       if filtered:
+#         x.append(list((map(lambda x : float(x), filtered[:-1]))))
+#         y.append(int(filtered[-1]))
+#
+#   return (np.mat(x).T, np.mat(y))
 
-  return (np.mat(x).T, np.mat(y))
 
-#
-#
-# def lee_numeros(archivo):
-#     X = np.zeros((400, 5000))
-#     y = np.zeros((1, 5000))
-#
-#     with open(archivo, 'r') as a:
-#         column = 0
-#         for line in a:
-#             cols = list(filter(lambda x: x != "", line.split(" ")))
-#             row = 0
-#             for i in range(len(cols) - 1):
-#                 if i != 0 :
-#                     X[row][column] = float(cols[i])
-#                 else:
-#                     y[0][column] = float(cols[i])
-#                     print(cols[i])
-#                 row += 1
-#             column += 1
-#
-#     #print(y)
-#
-#     temp = []
-#     temp = np.zeros((10, 5000))
-#     print(len(y))
-#     print("y0", len(y[0]))
-#     for i in range(len(y[0])):
-#         yi = int(y[0][i]) - 1
-#         temp[yi][i] = 1
-#         #print(y[0][i])
-#     print(temp.transpose())
-#
-#     return X, temp.transpose()
+
+def lee_numeros(archivo):
+    X = np.zeros((400, 5000))
+    y = np.zeros((1, 5000))
+
+    with open(archivo, 'r') as a:
+        column = 0
+        for line in a:
+            cols = list(filter(lambda x: x != "", line.split(" ")))
+            row = 0
+            for i in range(len(cols) - 1):
+                X[row][column] = float(cols[i])
+                print(X[row][column])
+                row += 1
+                y[0][column] = float(cols[400])
+            column += 1
+    # print(y)
+    print(X)
+
+    temp = []
+    temp = np.zeros((10, 5000))
+    print(len(y))
+    print("y0", len(y[0]))
+    for i in range(len(y[0])):
+        yi = int(y[0][i]) - 1
+        temp[yi][i] = 1
+        #print(y[0][i])
+    # print(temp.transpose())
+
+    return X, temp.transpose()
 
 
 
