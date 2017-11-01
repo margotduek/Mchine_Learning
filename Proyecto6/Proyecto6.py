@@ -5,21 +5,6 @@ import matplotlib.pyplot as plt
 from pylab import plot, ylim
 
 
-# def lee_numeros(filename):
-#   x = []
-#   y = []
-#   with open(filename, 'r') as file:
-#     reader = csv.reader(file, delimiter=' ')
-#     for row in reader:
-#       filtered = list(filter(lambda x: x != "", row))
-#       if filtered:
-#         x.append(list((map(lambda x : float(x), filtered[:-1]))))
-#         y.append(int(filtered[-1]))
-#
-#   return (np.mat(x).T, np.mat(y))
-
-
-
 def lee_numeros(archivo):
     X = np.zeros((400, 5000))
     y = np.zeros((1, 5000))
@@ -31,17 +16,12 @@ def lee_numeros(archivo):
             row = 0
             for i in range(len(cols) - 1):
                 X[row][column] = float(cols[i])
-                print(X[row][column])
                 row += 1
                 y[0][column] = float(cols[400])
             column += 1
-    # print(y)
-    print(X)
 
     temp = []
     temp = np.zeros((10, 5000))
-    print(len(y))
-    print("y0", len(y[0]))
     for i in range(len(y[0])):
         yi = int(y[0][i]) - 1
         temp[yi][i] = 1
@@ -72,7 +52,7 @@ def entrenaRN(input_layer_size, hidden_layer_size, num_labels, X, y):
     ygorrito = sigmoidal(Z2)
 
     ## Backward Propagation ##
-    dz2 = ygorrito - y
+    dz2 = ygorrito - y.transpose()
     dw2 = np.dot(dz2, A1.transpose()) * (1/num_labels)
     db2 = np.sum(dz2, axis=0) * (1/num_labels)
     W2 = W2 - alpha * dw2
@@ -102,6 +82,7 @@ def randInicializacionPesos(L_in, L_out):
 
 def prediceRNYaEntrenada(X,W1,b1,W2,b2):
     lasty = []
+    maxi = 0
     # Z1 = W1X + B1
     Z1 = np.dot(W1, X) + b1
     A1 = sigmoidal(Z1)
@@ -109,11 +90,13 @@ def prediceRNYaEntrenada(X,W1,b1,W2,b2):
     Z2 = np.dot(W2, A1) + b2
     #ygorrito = A2 y gorrito es la salida final, como en este caso a2 es la final por eso es ygorrito
     ygorrito = sigmoidal(Z2)
+    print("gorrito funcion ", ygorrito)
     for i in range(len(ygorrito)):
         for j in range(len(ygorrito[i])):
             maxi = max(ygorrito[i])
-            if(ygorrito[i][j] == maxi):
-                lasty.append(j)
+        if(ygorrito[i][j] == maxi):
+            lasty.append(j)
+
 
     return lasty
 
@@ -124,5 +107,3 @@ ygorrito = prediceRNYaEntrenada(X,W1,b1,W2,b2)
 
 print(y)
 print(ygorrito)
-print(y.shape)
-print(ygorrito.shape)

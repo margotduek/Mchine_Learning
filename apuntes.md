@@ -28,5 +28,23 @@ Las redes neuronales siguen siendo parte del aprendizaje supervizado
 
 
 
+
+
+# Aprendizaje no supervisado
+Cuando los ejemplos no tienen etiquetas es aprendizaje no supervisado
+  - La actividad más importante del aprendizaje no supervisado es la descripción de datos
+  -
+
+
+
+
+
+
+
+
+
+
+
+
 ## Investigar
 - aprendizaje supervizado y por refuerzo
