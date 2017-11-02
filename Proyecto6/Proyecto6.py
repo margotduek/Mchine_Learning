@@ -90,12 +90,12 @@ def prediceRNYaEntrenada(X,W1,b1,W2,b2):
     Z2 = np.dot(W2, A1) + b2
     #ygorrito = A2 y gorrito es la salida final, como en este caso a2 es la final por eso es ygorrito
     ygorrito = sigmoidal(Z2)
-    print("gorrito funcion ", ygorrito)
+    #print("gorrito funcion ", ygorrito)
     for i in range(len(ygorrito)):
         for j in range(len(ygorrito[i])):
             maxi = max(ygorrito[i])
-        if(ygorrito[i][j] == maxi):
-            lasty.append(j)
+            if(ygorrito[i][j] == maxi):
+                lasty.append(j)
 
 
     return lasty
@@ -103,7 +103,7 @@ def prediceRNYaEntrenada(X,W1,b1,W2,b2):
 X, y = lee_numeros("digitos.txt")
 W1, b1, W2, b2 = entrenaRN(400, 25, 10, X, y)
 ygorrito = prediceRNYaEntrenada(X,W1,b1,W2,b2)
-# np.set_printoptions(threshold=np.nan)
+# np.set_printopt   xxions(threshold=np.nan)
 
-print(y)
-print(ygorrito)
+#print("y", y)
+#print("yg", ygorrito)
