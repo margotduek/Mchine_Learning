@@ -86,10 +86,13 @@ def runkMeans(X, centroids, max_iters, true):
         for i in range(len(X)):
             if(idx[i] == 0):
                 plt.scatter(X[i][0], X[i][1], color = 'r')
-            if(idx[i] == 1):
+            elif(idx[i] == 1):
                 plt.scatter(X[i][0], X[i][1], color = 'g')
-            if(idx[i] == 2):
+            elif(idx[i] == 2):
                 plt.scatter(X[i][0], X[i][1], color = 'b')
+            else:
+                plt.scatter(X[i][0], X[i][1], color = 'y')
+
         for i in range(len(centroids)):
             plt.scatter(centroids[i][0], centroids[i][1], color = 'y', s = 130, marker = 'x', linewidth = '7')
             if(true):
